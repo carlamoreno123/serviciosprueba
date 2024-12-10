@@ -20,7 +20,7 @@ class _IsolateScreenState extends State<IsolateScreen> {
     await Isolate.spawn(_tareaPesada, receptor.sendPort);
     receptor.listen((message){
       setState(() {
-        _resultado =mensajee;
+        _resultado =mensaje;
         _calculando =false;
       });
       receptor.close();
