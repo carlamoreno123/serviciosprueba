@@ -15,7 +15,7 @@ class _StreamScreenState extends State<StreamScreen> {
   Stream<int> contadorStream(int max)async*{
   for (int i = 0; i <= max; i++) {
   await Future.delayed(const Duration(seconds: 1));
-  yield i
+  yield i;
   }
 
   @override
@@ -41,7 +41,4 @@ class _StreamScreenState extends State<StreamScreen> {
   }
 }
           // child:
-          ),
-    );
-  }
 }
