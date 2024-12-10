@@ -9,12 +9,26 @@ class IsolateScreen extends StatefulWidget {
 }
 
 class _IsolateScreenState extends State<IsolateScreen> {
-  static _tareaPesada() {
+  int? _resultado;
+  bool _calculando= false;
+  int _contador = 0;
+   Future<void> suma() async{
+    setState(() {
+      _calculando =true;
+    });
+    final receptor= ReceivePort();
+    await Isolate.spawn(_tareaPesada, receptor.sendPort);
+    receptor.listen((message){
+      setState(() {
+        _resultado =mensajee;
+        _calculando =false;
+      });
+      receptor.close();
+    });
+   }
+   static _tareaPesada(SendPort sendport){
     int sum = 0;
-    for (int i = 0; i <= 1000000000; i++) {
-      sum += i;
-    }
-  }
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +50,16 @@ class _IsolateScreenState extends State<IsolateScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Presiona el botón para iniciar la cuenta',
-                    style: const TextStyle(fontSize: 30)),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
+              _calculando 
+              ? CircularProgressIndicator()
+              :Text(
+                _resultado ==null 
+                ? 'presiona el boton pa iniciar la cuenta'
+                : '$_resultado'
+              ),SizedBox(
+                height: 30,
+              ),ElevatedButton(onPressed: _calculando ?null: suma,
+             
                   child: const Text('Iniciar operación'),
                 ),
                 SizedBox(
