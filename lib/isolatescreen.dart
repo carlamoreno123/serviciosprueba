@@ -9,26 +9,36 @@ class IsolateScreen extends StatefulWidget {
 }
 
 class _IsolateScreenState extends State<IsolateScreen> {
-  int? _resultado;
-  bool _calculando= false;
-  int _contador = 0;
-   Future<void> suma() async{
+  int? _resultado; ////
+  bool _calculando = false; ////
+  int _contador = 0; ////
+
+  //// /*
+  Future<void> suma() async {
     setState(() {
-      _calculando =true;
+      _calculando = true;
     });
-    final receptor= ReceivePort();
+
+    final receptor = ReceivePort();
+
     await Isolate.spawn(_tareaPesada, receptor.sendPort);
-    receptor.listen((message){
+
+    receptor.listen((mensaje) {
       setState(() {
-        _resultado =mensaje;
-        _calculando =false;
+        _resultado = mensaje;
+        _calculando = false;
       });
       receptor.close();
     });
-   }
-   static _tareaPesada(SendPort sendport){
+  } //// */
+
+  static _tareaPesada(SendPort sendport) {
     int sum = 0;
-   }
+    for (int i = 0; i <= 100000; i++) {
+      sum += i;
+    }
+    sendport.send(sum); ////
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,16 +60,18 @@ class _IsolateScreenState extends State<IsolateScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              _calculando 
-              ? CircularProgressIndicator()
-              :Text(
-                _resultado ==null 
-                ? 'presiona el boton pa iniciar la cuenta'
-                : '$_resultado'
-              ),SizedBox(
-                height: 30,
-              ),ElevatedButton(onPressed: _calculando ?null: suma,
-             
+                _calculando //// /*
+                    ? CircularProgressIndicator()
+                    : Text(
+                        _resultado == null
+                            ? 'Presiona el botón para iniciar la cuenta'
+                            : '$_resultado', //// */
+                        style: const TextStyle(fontSize: 30)),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  onPressed: _calculando ? null : suma, ////
                   child: const Text('Iniciar operación'),
                 ),
                 SizedBox(
